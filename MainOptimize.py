@@ -22,16 +22,17 @@ def objective(x):
 #	return constr
 
 def constr(x):
+	##TEST WHETHER RETURNING -1 WOULD STILL WORK, OR DOES FUNCTION CHECK FOR IMPROVEMENT EACH ITERATION?
 	#Bound constraints
 	for j, val in enumerate(x):
 	#Checks upper bound per element
 		if val > 150:
-			return lambda x: 150 - x[j]
+			return 150 - x[j]
 	#Checks that pump operates certain amount of time (energy) per day
 	if sum(x) > 700:
-		return lambda x: 700 - sum(x)
+		return 700 - sum(x)
 	if sum(x) < 650:
-		return lambda x: sum(x) - 650
+		return sum(x) - 650
 	#All tests passed successfully	
 	return 1 	
 
