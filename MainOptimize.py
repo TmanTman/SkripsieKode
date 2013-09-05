@@ -1,4 +1,4 @@
-from numpy import *
+import numpy as np
 import scipy.optimize as opt
 import matplotlib.pyplot as plt
 
@@ -12,17 +12,6 @@ def objective(x, lights, pv_in, fig, ax, line1):
 	fig.canvas.draw()
 	####
 	return grid_usage
-
-##Boundaries are not implementable in this form
-#def manufact_constr(x):
-#	#Bounds constraints	
-#	constr = zeros((12))
-#	for i in xrange(12):
-#		constr[i] = (700 - x[i])
-#	#Total use constraint
-#	constr = append(constr, sum(x)-700)
-#	constr = append(constr, 650-sum(x))
-#	return constr
 
 def constr(x):
 	##TEST WHETHER RETURNING -1 WOULD STILL WORK, OR DOES FUNCTION CHECK FOR IMPROVEMENT EACH ITERATION?
@@ -40,11 +29,19 @@ def constr(x):
 	return 1 	
 
 ##Init##
-X0 = [50, 50, 50, 50, 50, 50 ,50, 50, 50, 50, 50, 50]
+X0 = np.array([50, 50, 50, 50, 50, 50 ,50, 50, 50, 50, 50, 50])
 lights  = [50, 50, 75, 150, 100, 100, 80, 80, 120, 180, 120, 100]
 pv_in = [0, 0, 0, -50, -150, -300, -400, -300, -150, -50, 0, 0]
 ##Graphing##
+plt.ion()
 fig, ax = plt.subplots()
-line1,=ax.plot(arange(12), X0, 'r')
+plt.xlim(0, 15)
+plt.ylim(0, 200)
+plt.xlabel('timeslot')
+plt.title('Energy use')
+bot = X0.min().round()
+line1=ax.bar(np.arange(12), X0, bottom=0)
+fig.canvas.draw()
 ##Optimization
-opt.fmin_cobyla(objective, X0, cons=(constr,), args=(lights, pv_in, fig, ax, line1), consargs=(), rhoend=1e-7)
+x = opt.fmin_cobyla(objective, X0, cons=(constr,), args=(lights, pv_in, fig, ax, line1), consargs=(), rhoend=1e-7)
+
