@@ -22,8 +22,10 @@ public class HelloMFile
 
         // call user-defined function (must be on the path)
         proxy.eval("addpath('C:\\Users\\T Nieuwoudt\\My Documents\\Try_MatlabConnect_Mfile')");
-        Object[] ret =  proxy.returningFeval("myfunc", 1, 10);
-		System.out.println("Value received: " + Arrays.toString((String[]) ret[0]));
+        //Test calling a standard matlab function
+		proxy.feval("disp", "Hello from argument called function");
+		//Test calling a m file with an argument
+		proxy.feval("myfunc", "Hello, from argument called custom function");
         proxy.eval("rmpath('C:\\Users\\T Nieuwoudt\\My Documents\\Try_MatlabConnect_Mfile')");
 		
 		//read the modified variables from the matlab environment
