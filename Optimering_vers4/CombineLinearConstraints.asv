@@ -1,0 +1,28 @@
+function [A, b] = CombineLinearConstraints(varargin)
+%COMBINELINEARCONSTRAINTS Combines all provided constraint matrices
+%   This file combines the inequality constraints into one that can be
+%   provided to the patternsearch.
+%USAGE: CombineLinearConstraints(varargin of all Appliances objects)
+
+%Determine the amount of timeslots used per day, from the first object's A matrix
+timeslots = size(varargin{1}.A, 2); 
+
+%Determine the total amount of inequalities to be combined
+rows = 0;
+for i=1:2:(length(varargin)-1)
+    rows = rows+size(varargin{i}, 1);
+end
+
+%Preallocate the memory (preallocation for better performance)
+A = zeros(rows, length(varargin)/2*timeslots);
+b = zeros(rows, 1);
+
+%Iterate through each of the pairs and add it to the final matrices
+[eq_inserted, current_eq] = deal(0);
+for i=1:2:length(varargin)
+    current_eq = size(varargin{i}, 1); %Determine the amount of ineqaulities for the current appliance
+    A((1+eq_inserted):(eq_inserted + current_eq), (1+floor(i/2)*timeslots):(floor(i/2)*timeslots+timeslots)) = varargin{i}; %Add the inequality matrix to the A matrix
+    b((1+eq_inserted):(eq_inserted + current_eq), 1) = varargin{i+1}; %Add the inequalities to the b vector
+    eq_inserted = eq_inserted + current_eq; %Update the amount of ineqaulities inserted.
+end
+

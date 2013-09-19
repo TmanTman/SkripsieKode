@@ -1,0 +1,3 @@
+function [b] myfunc()
+    disp('hello from MYFUNC')
+b = 10
