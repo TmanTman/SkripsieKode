@@ -9,9 +9,9 @@
 %varargin - the profiles of the set appliances
 
 function y = object_function(optimize_profile, TOU, varargin)
-timeslots = size(varargin{1}, 2);
-grid = zeros(1, 24);
-grid_usage = zeros(1, 24);
+timeslots = length(varargin{1});
+grid = zeros(1, timeslots);
+grid_usage = zeros(1, timeslots);
 
 %Add all appliances with set profiles to the grid
 for i=1:length(varargin)
@@ -19,8 +19,8 @@ for i=1:length(varargin)
 end
 
 %Add all appliance data being optimized to the grid profile
-for i=1:(length(optimize_profile)/timeslots) % for each device
-    grid = grid + optimize_profile(1, (1+(i-1)*timeslots):(i*timeslots));
+for i=1:(length(optimize_profile)/timeslots)  % Divide the optimize_profile into its respective appliances
+    grid = grid + optimize_profile(1, (1+(i-1)*timeslots):(i*timeslots)); %
 end
 
 %Assign grid_usage vector values

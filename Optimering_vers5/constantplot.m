@@ -7,7 +7,7 @@
 %flag)constantplots(optimvalues, flag, <vectorYouWantToGraph>), ...(repeat
 %if required)}, 'Display', 'iter')
 
-function stop = constantplot(optimvalues, flag, profile, name)
+function stop = constantplots(optimvalues, flag, profile, name)
 %PLOT_CONSTANT Summary of this function goes here
 %   Detailed explanation goes here
 stop = false;
