@@ -153,6 +153,11 @@ Profile_Total[0,:]=Profile_Uncontrollable[0,:]
 print "Energy=",Profile_Total[1,:],"\n"
 print "Demand=",Profile_Total[2,:],"\n"
 
+#Total Consumption
+print "Uncontrollable load consumption: " , sum(Profile_Uncontrollable[1,:])
+print "Controllable load consumption: " , sum(Profile_Controllable[1,:])
+print "Total Energy consumption: ", sum(Profile_Total[1,:])
+
 #Sketch the three graphs
 #Will sketch 3 axes alongside each other, sharing the y scale
 XTickInt = 4
