@@ -16,7 +16,7 @@ PV_in = -1*[zeros(1, 12) temp fliplr(temp) zeros(1, 12)];
 lights = [25 25 25 25 25 25 25 25 15 15 10 10 10 50 100 100 75 75 35 35 35 35 30 30 30 30 20 20 20 20 20 20 20 20 20 20 50 50 100 150 200 200 250 250 150 150 150 150];
 
 %Configure pump appliance
-tmp_X0 = [ones(1, 148);
+tmp_X0 = 148*ones(1, 48);
 tmp_LB = zeros(1, 48);
 tmp_UB = ones(1, 48)*1100;
 tmp_A = ones(2, 48);
@@ -30,6 +30,9 @@ tmp_LB = -500*ones(1, 48);
 tmp_UB = 800*ones(1, 48);
 [tmp_A, tmp_b] = BatteryInequalityGenerator(1500);
 battery = Appliance(tmp_LB, tmp_UB, tmp_A, tmp_b, tmp_X0);
+
+%Define the controllable vector
+tmp_X0 = 
 
 %Create the variable matrices from the configurable appliances
 [LB, UB, A, b, X0] = CombineConfigAppl(pump, battery);

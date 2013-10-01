@@ -67,7 +67,7 @@ cost_global[0] = gridPay(grid_usage_profile)
 ##Graphing##
 timeslots = np.arange(12)
 plt.ion()
-fig, ((ax1, ax2, axA), (ax3, ax4, axB)) = plt.subplots(2, 3, sharey='row', sharex='column')
+fig, ((ax1, ax2, axA), (ax3, ax4, axB)) = plt.subplots(2, 3, sharey='row', sharex='col')
 ax5 = fig.add_subplot(2, 3, 3)
 ax1.bar(timeslots, lights)
 ax1.set_title('Lights')
