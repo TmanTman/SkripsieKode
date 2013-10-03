@@ -1,0 +1,3 @@
+cd Documents\Github\SkripsieKode\BBB_ServerClientMatlab\Python\Server
+javac -cp .;matlabcontrol.jar;py4j.jar MatlabCallerEntryPoint.java
+java -cp .;matlabcontrol.jar;py4j.jar MatlabCallerEntryPoint
