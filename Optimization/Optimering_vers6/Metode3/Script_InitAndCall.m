@@ -23,6 +23,11 @@ tmp_X0 = 500*ones(1, 48);
 tmp_LB = -500*ones(1, 48);
 tmp_UB = 800*ones(1, 48);
 [tmp_A, tmp_b] = BatteryInequalityGenerator(1500);
+battery = Battery(tmp_LB, tmp_UB, tmp_A, tmp_b, tmp_X0);
+
+%Configure Appliances. This should later be read in from the database
+%Information as given is read in from the 
+tmp_X0
 
 %Create the variable matrices from the configurable appliances
 [LB, UB, A, b, X0] = CombineConfigAppl(battery);

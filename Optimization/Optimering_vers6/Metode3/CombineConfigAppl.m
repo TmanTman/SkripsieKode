@@ -4,14 +4,21 @@ function [LB, UB, A, b, X0] = CombineConfigAppl( battery, varargin )
 %   This function returns the variable matrices that can be provided to the
 %   patternsearch method. The combination of the different appliances is
 %   done for each of their properties: LB, UB, A, b, X0
-appls = length(varargin);
+
+%Determine the dimensions of the A and b matrices 
+vars = length(battery)
+for i=1:length(varargin)
+    vars+=length(varargin{i}
+end
 
 %Preallocate memory to the LB, UB and X0  matrices (A and b handled in
 %other function
-LB = zeros(1, appls*timeslots);
-UB = zeros(1, appls*timeslots);
-X0 = zeros(1, appls*timeslots);
-for i=1:appls
+LB = zeros(1, vars);
+UB = zeros(1, vars);
+X0 = zeros(1, vars);
+%Insert battery constraints
+LB[1:lenght(battery)] = battery.LB
+for i=1:length(varargin)
     LB(1, 1+(i-1)*timeslots:(i*timeslots)) = varargin{i}.LB;
     UB(1, 1+(i-1)*timeslots:(i*timeslots)) = varargin{i}.UB;
     X0(1, 1+(i-1)*timeslots:(i*timeslots)) = varargin{i}.X0;
