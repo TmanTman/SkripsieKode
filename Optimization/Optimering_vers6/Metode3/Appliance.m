@@ -21,13 +21,29 @@ classdef Appliance
         d
     end
     methods
-        function Appl = Appliance(LB, UB, A, b, X0, d)
-            Appl.LB = LB;
-            Appl.UB = UB;
-            Appl.A = A;
-            Appl.b = b;
+        function Appl = Appliance(X0, D)
+            N = length(X0);
+            Appl.LB = zeros(N);
+            Appl.UB = 24*3600*ones(N);
             Appl.X0 = X0;
-            Appl.d = d;
+            Appl.d = D;
+            %Create A and b vector
+            %Initialize
+            Appl.A = zeros(N+1, N);
+            Appl.b = zeros(N+1, 1);
+            %Make the boundary entries
+            Appl.A(1,1) = -1;
+            Appl.b(1) = 0;
+            Appl.A(2,N) = 1;
+            Appl.b(2) = 24*3600 - D(N);
+            %Make the entries inbetween
+            if N>1
+                for i=1:(N-1)
+                    Appl.A(2+i,i) = 1;
+                    Appl.A(2+i,i+1) = -1;
+                    Appl.b(2+i) = -D(i);
+                end
+            end
         end %function Appliance (Constructor)
     end %methods
 end %classdef

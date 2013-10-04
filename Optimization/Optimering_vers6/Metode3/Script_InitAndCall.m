@@ -10,7 +10,7 @@
 %Changed to 48 profile system
 %
 %MAJOR REVISION 2: 3 Oktober 2013
-%Het aangepas om begintye te optimeer
+%Adapted to optimize appliance start times
 
 %Initialization
 close all;
@@ -26,8 +26,20 @@ tmp_UB = 800*ones(1, 48);
 battery = Battery(tmp_LB, tmp_UB, tmp_A, tmp_b, tmp_X0);
 
 %Configure Appliances. This should later be read in from the database
-%Information as given is read in from the 
-tmp_X0
+%Information hardcoded according to 4 October database entries
+%Values recieved by running ExtractSingleSource.py in Optimizaiton
+%version5, in folder toetsLoads
+%Converted to value in seconds
+
+%Swimming pool pump
+tmp_X0 = [43200 61200];
+tmp_D = [14400 14400];
+pump = Appliance(tmp_X0, tmp_D);
+
+%Geyser
+tmp_X0 = [25200 68400];
+tmp_D = [3600 10800];
+geyser = Appliance(tmp_X0, tmp_D);
 
 %Create the variable matrices from the configurable appliances
 [LB, UB, A, b, X0] = CombineConfigAppl(battery);
