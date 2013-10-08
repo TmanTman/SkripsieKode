@@ -1,7 +1,7 @@
 %Skripsie
 %Tielman Nieuwoudt
-%4 Oktober 2013
-%This file creates a class for configurable appliances
+%7 Oktober 2013
+%This file creates a class for un
 
 %Fields per appliance:
 %.LB - Lower Boundary conditions
@@ -11,7 +11,7 @@
 %.X0 - The beginvalues for the device
 %.D = The duration of each period
 
-classdef Appliance
+classdef Contr_Appl
     properties 
         LB
         UB
@@ -23,8 +23,8 @@ classdef Appliance
     methods
         function Appl = Appliance(X0, D)
             N = length(X0);
-            Appl.LB = zeros(N);
-            Appl.UB = 24*3600*ones(N);
+            Appl.LB = zeros(1, N);
+            Appl.UB = 24*3600*ones(1, N);
             Appl.X0 = X0;
             Appl.d = D;
             %Create A and b vector
