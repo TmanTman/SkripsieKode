@@ -31,9 +31,6 @@ tmp_UB = 800*ones(1, 48);
 [tmp_A, tmp_b] = BatteryInequalityGenerator(1500);
 battery = Appliance(tmp_LB, tmp_UB, tmp_A, tmp_b, tmp_X0);
 
-%Define the controllable vector
-tmp_X0 = 
-
 %Create the variable matrices from the configurable appliances
 [LB, UB, A, b, X0] = CombineConfigAppl(pump, battery);
 
@@ -45,16 +42,18 @@ TOU(1, 21:35) = 70;
 TOU(1, 36:42) = 100;
 TOU(1, 43:48) = 70;
 
-%Call necessary function handles to make call to patternsearch
-OFHandle = @(x)object_function(x, TOU, PV_in, lights);
+%Handle to cost function for primary optimization
+OFHandle1 = @(x)object_function(x, TOU, PV_in, lights);
 
-%Set up optimization options and run optimization
-options = psoptimset('PlotFcns', {@(optimset, flags)constantplot(optimset, flags, -1*PV_in, 'PV energy'), ...
-    @(optimset, flags)constantplot(optimset, flags, lights, 'Lights'), ...
-    @optimization_print, ...
-    @(optimset, flags)gridplot(optimset, flags, PV_in, lights), ...
-    @(optimset, flags)constantplot(optimset, flags, TOU, 'Time-of-use Tariffs'), ...
-    @psplotbestf...
-    }, 'Display', 'iter', ...
-    'InitialMeshSize',10);
-[x, fval] = patternsearch(OFHandle, X0, A, b, [], [], LB, UB, [], options);
+%Run primary optimization
+[x, fval] = patternsearch(OFHandle1, X0, A, b, [], [], LB, UB, [], options);
+
+
+
+%Handle to cost function for secondary optimization
+OFHandle2 = @(x)object_function(x, 
+
+
+
+
+[x, fval] = patternsearch(
