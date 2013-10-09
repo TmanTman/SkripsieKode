@@ -20,11 +20,11 @@ classdef Contr_Appl
         A
         b
         X0
-        D
+        d
         demand
     end
     methods
-        function Appl = Appliance(X0, D, demand)
+        function Appl = Contr_Appl(X0, D, demand)
             N = length(X0);
             Appl.LB = zeros(1, N);
             Appl.UB = 24*3600*ones(1, N);

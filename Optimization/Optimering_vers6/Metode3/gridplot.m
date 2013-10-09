@@ -25,32 +25,17 @@ function stop = gridplot(optimvalues,flag, varargin)
 %   $Revision: 1.1.6.1 $  $Date: 2009/08/29 08:25:12 $
 
 stop = false;
-timeslots = size(varargin{1}, 2);
-grid = zeros(1, timeslots);
+grid = calcGrid(optimvalues.x, varargin{:});
 switch flag
     case 'init'
-        %add all appliance data being optimized to the grid profile
-        for i=1:mod(length(optimvalues.x), timeslots)
-            grid(1, 1:timeslots) = optimvalues.x(1, (1+(i-1)*timeslots):(i*timeslots));
-        end
-        %add all set appliances to the grid profile
-        for i=1:length(varargin)
-            grid = grid + varargin{i};
-        end
+        %Plot graph initially
         Gridgraph = bar(grid);
         set(Gridgraph,'Tag','Grid');
-        xlabel('Hours through the day','interp','none'); 
-        ylabel('Energy used per hour','interp','none')
+        xlabel('Halfhours through the day','interp','none'); 
+        ylabel('Energy per half hour','interp','none')
         title('Grid enery usage','interp','none');
     case 'iter'
-        %add all appliance data being optimized to the grid profile
-        for i=1:mod(length(optimvalues.x), timeslots)
-            grid(1, 1:timeslots) = optimvalues.x(1, (1+(i-1)*timeslots):(i*timeslots));
-        end
-        %add all set appliances to the grid profile
-        for i=1:length(varargin)
-            grid = grid + varargin{i};
-        end
+        %Reload info for iteration
         Gridgraph = findobj(get(gca,'Children'),'Tag','Grid');
         set(Gridgraph, 'Ydata',grid);
 pause(0.2)

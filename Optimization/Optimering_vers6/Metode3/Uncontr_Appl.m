@@ -11,7 +11,7 @@ classdef Uncontr_Appl
         profile
     end
     methods
-        function Appl = Appliance(profile)
+        function Appl = Uncontr_Appl(profile)
             Appl.profile = profile;
         end %function Appliance (Constructor)
     end %methods
