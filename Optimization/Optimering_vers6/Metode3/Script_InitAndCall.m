@@ -36,17 +36,21 @@ battery = Battery(tmp_LB, tmp_UB, tmp_A, tmp_b, tmp_X0);
 %Swimming pool pump
 tmp_X0 = [43200 61200]; %Starttime Initial
 tmp_D = [14400 14400];  %Duration (fixed)
-tmp_demand = 750;       %Watt
+tmp_demand = 0.750;     %Watt
 pump = Contr_Appl(tmp_X0, tmp_D, tmp_demand);
 
 %Geyser
 tmp_X0 = [25200 68400];
 tmp_D = [3600 10800];
-tmp_demand = 1000;
+tmp_demand = 0.1000;
 geyser = Contr_Appl(tmp_X0, tmp_D, tmp_demand);
 
 %Create the variable matrices from the configurable appliances
 [LB, UB, A, b, X0] = CombineConfigAppl(battery, pump, geyser);
+%The equality vector is hardcoded because its only a single line
+Aeq = [ones(48) zeros(4)];
+beq = 1;
+    
 
 %Set up TOU vector
 TOU = ones(1, 48);

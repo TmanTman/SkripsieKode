@@ -42,18 +42,16 @@ TOU(1, 21:35) = 70;
 TOU(1, 36:42) = 100;
 TOU(1, 43:48) = 70;
 
-%Handle to cost function for primary optimization
-OFHandle1 = @(x)object_function(x, TOU, PV_in, lights);
+%Call necessary function handles to make call to patternsearch
+OFHandle = @(x)object_function(x, TOU, PV_in, lights);
 
-%Run primary optimization
-[x, fval] = patternsearch(OFHandle1, X0, A, b, [], [], LB, UB, [], options);
-
-
-
-%Handle to cost function for secondary optimization
-OFHandle2 = @(x)object_function(x, 
-
-
-
-
-[x, fval] = patternsearch(
+%Set up optimization options and run optimization
+options = psoptimset('PlotFcns', {@(optimset, flags)constantplot(optimset, flags, -1*PV_in, 'PV energy'), ...
+    @(optimset, flags)constantplot(optimset, flags, lights, 'Lights'), ...
+    @optimization_print, ...
+    @(optimset, flags)gridplot(optimset, flags, PV_in, lights), ...
+    @(optimset, flags)constantplot(optimset, flags, TOU, 'Time-of-use Tariffs'), ...
+    @psplotbestf...
+    }, 'Display', 'iter', ...
+    'InitialMeshSize',10);
+[x, fval] = patternsearch(OFHandle, X0, A, b, [], [], LB, UB, [], options);

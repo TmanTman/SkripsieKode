@@ -44,8 +44,8 @@ switch flag
         title('Grid enery usage','interp','none');
     case 'iter'
         %add all appliance data being optimized to the grid profile
-        for i=1:mod(length(optimvalues.x), timeslots)
-            grid(1, 1:timeslots) = optimvalues.x(1, (1+(i-1)*timeslots):(i*timeslots));
+        for i=1:(length(optimvalues.x)/timeslots)
+            grid(1, 1:timeslots) = grid+optimvalues.x(1, (1+(i-1)*timeslots):(i*timeslots));
         end
         %add all set appliances to the grid profile
         for i=1:length(varargin)

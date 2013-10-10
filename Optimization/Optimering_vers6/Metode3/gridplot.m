@@ -38,5 +38,4 @@ switch flag
         %Reload info for iteration
         Gridgraph = findobj(get(gca,'Children'),'Tag','Grid');
         set(Gridgraph, 'Ydata',grid);
-pause(0.2)
 end

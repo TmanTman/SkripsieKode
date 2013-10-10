@@ -3,7 +3,8 @@ function [ A, b ] = BatteryInequalityGenerator(r)
 %the battery
 %This function takes the current charge level of the battery (r) and generates
 %the inequalities that ensures the battery will not charge itself beyond
-%the maximum capacity, or discharge itself beyond 20% discharge.
+%the maximum capacity, or discharge itself beyond 20% discharge
+%It also constrains energy gain/loss per day to be zero (its periodical)
 
 %The following scheme works for the battery, and fits into the scheme for
 %the whole calculation:
@@ -34,5 +35,6 @@ for i=1:96
         A(i, 1:floor((i+1)/2)) = 1;
     end
 end
+
 end
 
