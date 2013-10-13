@@ -18,24 +18,24 @@ function [ profile ] = constrProfile( X, dur, demand)
         
         %One element
         if ((X(1, i)+dur(1, i)) <= halfhour_after_start) 
-            profile(index_start) = dur(1, i)*demand;
+            profile(index_start) = dur(1, i)*(1/3600)*demand;
                 %fprintf('Identified as single element\n');
         %%%%%%fprintf('One Element, index written to: %d\n', index_start);
         %If more than one element
         else
             %Make first and last element entry and then fill in the middle elements
             %First element entry
-            profile(index_start) = (halfhour_after_start-X(1, i))*demand; 
+            profile(index_start) = (halfhour_after_start-X(1, i))*(1/3600)*demand; 
             index_end = ceil((X(1, i)+dur(1, i))/1800);
                 %fprintf('index_end: %d ', index_end);
             halfhour_before_end = (index_end-1)*1800;
             %Last element entry
-            profile(index_end) = (X(1, i)+dur(1, i)-halfhour_before_end)*demand; 
+            profile(index_end) = (X(1, i)+dur(1, i)-halfhour_before_end)*(1/3600)*demand; 
           %%%%%% % fprintf('First and last elements: %d and %d\n', index_start, index_end);
             %Fill in the elements between start and end
             if (index_end - index_start) > 1
                     %fprintf('Then Filling middle elements');
-                profile((index_start+1):(index_end-1)) = deal(1800*demand);
+                profile((index_start+1):(index_end-1)) = deal(0.5*demand);
           %%%%%%      %fprintf('Filling elements from %d to %d\n', (index_start+1), (index_end-1));
             end
             

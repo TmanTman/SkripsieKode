@@ -30,9 +30,9 @@ b(2:2:96, 1) = -1200 + r;
 A = zeros(96, 48);
 for i=1:96
     if  mod(i, 2) == 1
-        A(i, 1:floor((i+1)/2)) = -1;
-    else 
         A(i, 1:floor((i+1)/2)) = 1;
+    else 
+        A(i, 1:floor((i+1)/2)) = -1;
     end
 end
 

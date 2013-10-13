@@ -53,5 +53,4 @@ switch flag
         end
         Gridgraph = findobj(get(gca,'Children'),'Tag','Grid');
         set(Gridgraph, 'Ydata',grid);
-pause(0.2)
 end

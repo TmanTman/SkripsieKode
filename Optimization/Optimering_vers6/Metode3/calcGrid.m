@@ -3,10 +3,9 @@ function [ grid ] = calcGrid( optimize_profile, varargin )
     %Receives the profile being optimized and all contr&uncontr loads. 
     
 timeslots = 48; 
-grid = zeros(1, timeslots);
 
 %Insert battery usage into grid profile
-grid = grid+optimize_profile(1:timeslots);
+grid = optimize_profile(1:timeslots);
 
 %Indexholders so that we can link optimize_profile and controllable loads
 start_index = 49; %The first element after battery profile in optimize_prof
@@ -22,6 +21,7 @@ for i=1:length(varargin)
     elseif isa(varargin{i}, 'Uncontr_Appl'  )
         tmp_prof = varargin{i}.profile;
     else
+        %This condition should not be reached
         tmp_prof = zeros(1, 48);
     end
     grid = grid+tmp_prof(1, :);
