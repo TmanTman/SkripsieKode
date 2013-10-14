@@ -21,7 +21,7 @@ temp = [25 25 25 25 25 25 25 25 15 15 10 10 10 50 100 100 75 75 35 35 35 35 30 3
 lights = Uncontr_Appl(temp);
 
 %Configure battery
-tmp_X0 = 100*ones(1,48);
+tmp_X0 = [6*ones(1,24) -6*ones(1,24)];
 tmp_LB = -800*ones(1, 48);
 tmp_UB = 500*ones(1, 48);
 [tmp_A, tmp_b] = BatteryInequalityGenerator(1500);
@@ -79,4 +79,5 @@ options = psoptimset('PlotFcns', {@(optimset, flags)constantplot(optimset, flags
     @psplotbestf...
     }, 'Display', 'iter', 'MaxFunEvals', 200000,...
     'InitialMeshSize',10);
+
 [x, fval] = patternsearch(OFHandle, X0, A, b, Aeq, beq, LB, UB, [], options);
