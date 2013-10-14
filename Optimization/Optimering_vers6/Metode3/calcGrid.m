@@ -4,10 +4,7 @@ function [ grid ] = calcGrid( optimize_profile, varargin )
     
 timeslots = 48; 
 
-%Insert battery usage into grid profile
-bat_profile = optimize_profile(1:timeslots);
-fprintf('Battery contribution pos and neg:  %d, %d\n', sum(bat_profile(bat_profile>0)), sum(bat_profile(bat_profile<0)));
-
+%Insert battery profile into the grid profile
 grid = optimize_profile(1:timeslots);
 
 %Indexholders so that we can link optimize_profile and controllable loads
