@@ -77,14 +77,12 @@ def format_seconds_to_hhmmss(seconds):
     seconds %= 60
     return "%02i:%02i:%02i" % (hours, minutes, seconds)
 
-def barplot(XLabels,YData,XTickInt,ax):
-
+def barplot(XLabels,YData,XTickInt,ax, title, fig):
     # Calculate how many bars there will be
     N = len(YData)    
     # Generate the x-axis number range
     XData = range(N)
     # See note below on the breakdown of this command
-    #ax.bar(XData, YData, facecolor='#777777', align='center', yerr=err, ecolor='black')
     ax.bar(XData, YData, facecolor='#777777', align='center', ecolor='black')
     # Create the x label
     ax.set_xlabel('Time [hh:mm:ss]') 
@@ -96,13 +94,15 @@ def barplot(XLabels,YData,XTickInt,ax):
     # Create the x-axis tick labels (Must be the same length)
     XTickLabels = XLabels[(0)::XTickInt]
     ax.set_xticklabels(XTickLabels)
+    # Create the title, in italics
+    ax.set_title(title,fontstyle='italic')
+    dispGraph(fig, ax, title)
 
 
-def dispGraph(fig,ax):
-
+def dispGraph(fig,ax, title):
     # Adjust the font sizes
     # Create the title, in italics
-    plt.title('Total Energy demand from appliances', fontsize=14)
+    plt.title(title, fontsize=14)
     plt.setp(ax.get_xticklabels(), fontsize=10)
     plt.ylabel(ax.get_ylabel(), fontsize=12)
     plt.setp(ax.get_yticklabels(), fontsize=10)
@@ -111,7 +111,6 @@ def dispGraph(fig,ax):
     # for any long x tick labels
     fig.autofmt_xdate() 
     #Show  graph
-    plt.show()
 
 
 ##MAIN##
@@ -128,8 +127,6 @@ ProfileID = 5
 LoadStat = True
 CycleStat = True
 Timestamp,Profile_Uncontrollable = GetLoadProfile(ProfileID,LoadStat,CycleStat)
-#print "Timestamp [hh:mm:ss]=",Timestamp,"\n"      
-#print "Timestamp [sec]=",Profile_Uncontrollable[0,:],"\n"
 print "Energy=",Profile_Uncontrollable[1,:],"\n"
 print "Demand=",Profile_Uncontrollable[2,:],"\n"
 
@@ -138,8 +135,6 @@ ProfileID = 1
 LoadStat = True
 CycleStat = True
 Timestamp,Profile_Controllable = GetLoadProfile(ProfileID,LoadStat,CycleStat)
-#print "Timestamp [hh:mm:ss]=",Timestamp,"\n"      
-#print "Timestamp [sec]=",Profile_Controllable[0,:],"\n"
 print "Energy=",Profile_Controllable[1,:],"\n"
 print "Demand=",Profile_Controllable[2,:],"\n"
 
@@ -148,8 +143,7 @@ print "Demand=",Profile_Controllable[2,:],"\n"
 Profile_Total = np.zeros([3,len(Profile_Controllable[0,:])],float)
 Profile_Total[1:,:] = Profile_Uncontrollable[1:,:]+Profile_Controllable[1:,:]
 Profile_Total[0,:]=Profile_Uncontrollable[0,:]
-#print "Timestamp [hh:mm:ss]=",Timestamp,"\n"      
-#print "Timestamp [sec]=",Profile_Total[0,:],"\n"
+
 print "Energy=",Profile_Total[1,:],"\n"
 print "Demand=",Profile_Total[2,:],"\n"
 
@@ -163,17 +157,12 @@ print "Total Energy consumption: ", sum(Profile_Total[1,:])
 XTickInt = 4
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey='row')
 
-barplot(Timestamp, Profile_Uncontrollable[1,:],XTickInt,ax1)
-# Create the title, in italics
-ax1.set_title('Energy Consumption Profile - Uncontrollable',fontstyle='italic')
+barplot(Timestamp, Profile_Uncontrollable[1,:], XTickInt,ax1, 'Energy Consumption Profile - Uncontrollable', fig)
+barplot(Timestamp, Profile_Controllable[1,:],XTickInt,ax2, 'Energy Consumption Profile - Controllable', fig)                      
+barplot(Timestamp, Profile_Total[1,:],XTickInt, ax3, 'Energy Consumption Profile - Total', fig)
 
-barplot(Timestamp, Profile_Controllable[1,:],XTickInt,ax2)
-# Create the title, in italics
-ax2.set_title('Energy Consumption Profile - Controllable',fontstyle='italic')\
-                      
-barplot(Timestamp, Profile_Total[1,:],XTickInt,ax3)
-
-dispGraph(fig,ax1)
+#Display the formatted graphs   
+plt.show()  
 
 conn.close()
 print "Database closed successfully";

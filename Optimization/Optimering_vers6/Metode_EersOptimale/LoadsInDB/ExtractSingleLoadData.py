@@ -59,6 +59,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sqlite3
 
+#This should be read in as commandline arguments
+LoadID = 2 #1 for Pool pump,4 for geyser
+CategoryID = 1 #CORRECT AFTER CONSULTATION WITH PROFESSOR. Think this is suppose to show Uncontrol/Control/Renew etc
+
 conn = sqlite3.connect("test.db")
 cur = conn.cursor()
 print "Database opened successfully";
