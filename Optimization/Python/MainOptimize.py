@@ -1,14 +1,25 @@
+#University of Stellenbosch
+#Bachelor thesis 
+#Author: Tielman Nieuwoudt
+#Student Number: 16082370
+#7 September 2013
+
+#This program tests the capability of optimization in the Python environment
+
 import numpy as np
 import scipy.optimize as opt
 import matplotlib.pyplot as plt
 
+#list that contains the optimized cost values, for graphing purposes
 cost_global = np.array([0])
 
+#Commonly used function to add three vectors
 def add3Array(arr1, arr2, arr3):
 	arr1 = np.add(arr1, arr2)
 	arr1 = np.add(arr1, arr3)
 	return arr1 
 	
+#Determine the accumalative value of energy that should be paid for
 def gridPay (gridusage):
 	grid_chargedFor= 0
 	for i, val in enumerate(gridusage):
@@ -16,15 +27,20 @@ def gridPay (gridusage):
 			grid_chargedFor += val
 	return grid_chargedFor
 
+#clear the current values on the graph and insert new values
 def redrawGraph(x, y, ax, title):
 	ax.clear()
 	ax.set_title(title)
 	ax.bar(x, y)
 
+
 def objective(x, lights, pv_in, ax_x, ax_grid, ax_func, timeslots):
 	global cost_global
+	#calculate the energy profile of the grid
 	grid_usage = add3Array(lights, pv_in, x)
-	cost_global = np.append(cost_global, gridPay(grid_usage))
+	#Maintain the list of client cost, for graphing purposes
+	cost_to_client = gridPay(grid_usage)
+	cost_global = np.append(cost_global, cost_to_client)
 	##Graphing##
 	redrawGraph(timeslots, grid_usage, ax_grid, 'Grid')
 	redrawGraph(timeslots, x, ax_x, 'Controllable')
@@ -34,11 +50,10 @@ def objective(x, lights, pv_in, ax_x, ax_grid, ax_func, timeslots):
 	ax_func.scatter(np.arange(len(cost_global)), cost_global)
 	plt.draw()
 	####
-	return gridPay(grid_usage)
+	return cost_to_client
 
 def constr(x):
-	##TEST WHETHER RETURNING -1 WOULD STILL WORK, OR DOES FUNCTION CHECK FOR IMPROVEMENT EACH ITERATION?
-	#Bound constraints
+	#Boundary constraints
 	for j, val in enumerate(x):
 		print 'Element: ', j, ': ', val
 	#Checks lower bound per element
@@ -80,7 +95,6 @@ ax4.set_title('Energy from grid')
 ax5.scatter(np.arange(len(cost_global)), cost_global)
 ax5.set_title('Function Value')
 ax5.locator_params(nbins=4)
-plt.tight_layout()
 plt.draw()
 print 'This iterations cost: ', cost_global
 ##Optimization

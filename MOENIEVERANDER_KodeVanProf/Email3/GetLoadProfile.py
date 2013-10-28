@@ -119,7 +119,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sqlite3
 
-conn = sqlite3.connect("/Users/vermeuln/Databases/GridOptimiser/test.db")
+conn = sqlite3.connect("test.db")
 cur = conn.cursor()
 print "Database opened successfully";
 
