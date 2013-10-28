@@ -8,64 +8,86 @@
 %
 %MAJOR REVISION 1 on 27 September 2013
 %Changed to 48 profile system
+%
+%MAJOR REVISION on 28 October 2013
+%Adapted to Case Study 1 (No battery, no PV)
+%Superflexible method
 
 %Initialization
 close all;
-temp = [50 50 100 100 200 200 500 500 900 900 1000 1000];
-PV_in = -1*[zeros(1, 12) temp fliplr(temp) zeros(1, 12)];
-lights = [25 25 25 25 25 25 25 25 15 15 10 10 10 50 100 100 75 75 35 35 35 35 30 30 30 30 20 20 20 20 20 20 20 20 20 20 50 50 100 150 200 200 250 250 150 150 150 150];
+PV_in = -1*zeros(1, 48);
+lights = [50*ones(1, 12) 63 63 226 59.5 40*ones(1, 2) 240*ones(1, 16) 40*ones(1, 2) 327.5 336.5 910 577 345 78.5*ones(1, 3) 72*ones(1, 2) 66 0];
 
 %Configure pump appliance
-tmp_X0 = 148*ones(1, 48);
+%Initial schedule according to the database entries
+%OORSPRONKLIKE SKEDULE 
+tmp_X0 = [zeros(1, 23) 375*ones(1, 8) zeros(1, 2) 375*ones(1, 8) zeros(1, 7)];
+%tmp_X0 = 125*ones(1, 48);   
+%The pump can at the very least use no electrity
 tmp_LB = zeros(1, 48);
-tmp_UB = ones(1, 48)*750;
+%The pump is rated at 750W and can use maximum 375Wh per halfhour
+tmp_UB = ones(1, 48)*375;
+%The energy spent on the geyser must be between 6000W and 6100W
 tmp_A = ones(2, 48);
 tmp_A(2, :) = -1*tmp_A(2, :);
-tmp_b = [6100; -5900];
+tmp_b = [6100; -5950];
 pump = Appliance(tmp_LB, tmp_UB, tmp_A, tmp_b, tmp_X0);
 
 %Configure geyser appliance
-tmp_X0 = 148*ones(1, 48);
+%Inital schedule according to the database entries
+%OORSPRONKLIKE SKEDULE 
+tmp_X0 = [zeros(1, 13) 1500*ones(1, 2) zeros(1, 22) 1500*ones(1, 6) zeros(1, 5) ];
+%tmp_X0 = 250*ones(1, 48);
+%At the very least the pump can use zero electricity
 tmp_LB = zeros(1, 48);
+%At maximum, the 3000W rated geyser can use 1500W per half hour
 tmp_UB = ones(1, 48)*1500;
+%The total amount of energy must be between 12kWh and 12.5kWh
 tmp_A = ones(2, 48);
 tmp_A(2, :) = -1*tmp_A(2, :);
-tmp_b = [6100; -5900];
+tmp_b = [12500; -11800];
 geyser = Appliance(tmp_LB, tmp_UB, tmp_A, tmp_b, tmp_X0);
 
-%Configure battery
-tmp_X0 = 500*ones(1, 48);
-tmp_LB = -500*ones(1, 48);
-tmp_UB = 800*ones(1, 48);
-[tmp_A, tmp_b] = BatteryInequalityGenerator(1500);
-battery = Appliance(tmp_LB, tmp_UB, tmp_A, tmp_b, tmp_X0);
-
 %Create the variable matrices from the configurable appliances
-[LB, UB, A, b, X0] = CombineConfigAppl(pump, geyser, battery);
-Aeq = [zeros(1, 96) ones(1, 48)];
-beq = 0;
+[LB, UB, A, b, X0] = CombineConfigAppl(pump, geyser);
 
 %Set up TOU vector
-TOU = ones(1, 24);
-TOU(1, 1:13) = 70;
-TOU(1, 14:20) = 100;
-TOU(1, 21:35) = 70;
-TOU(1, 36:42) = 100;
-TOU(1, 43:48) = 70;
+TOU = ones(1, 48);
+TOU(1, 1:13) = 55.10;
+TOU(1, 14:19) = 174.87;
+TOU(1, 20:35) = 55.1;
+TOU(1, 36:39) = 174.87;
+TOU(1, 40:48) = 55.1;
+
+grid_init = (lights+pump.X0+geyser.X0);
+grid_usage_init = zeros(1, 48);
+for i=1:length(grid)
+    if(grid_init(i)>0)
+        grid_usage_init(i) = grid_init(i);
+    end
+end
+%Calculate cost, 1000 factor due to cost per kWh and current dimen Wh
+cost_init = (grid_usage_init.*TOU(1, :))/1000;
+fprintf('Initial cost: %d\n', fval)
 
 %Call necessary function handles to make call to patternsearch
 OFHandle = @(x)object_function(x, TOU, PV_in, lights);
 
 %Set up optimization options and run optimization
 options = psoptimset('PlotFcns', {@(optimset, flags)constantplot(optimset, flags, -1*PV_in, 'PV energy'), ...
-    @(optimset, flags)constantplot(optimset, flags, lights, 'Lights'), ...
+    @(optimset, flags)constantplot(optimset, flags, lights, 'Uncontrollable Load Profile'), ...
     @(optimset, flags)ApplPlot(optimset, flags, 1, 'Pump Profile'), ...
     @(optimset, flags)ApplPlot(optimset, flags, 49, 'Geyser Profile'), ...
-    @(optimset, flags)ApplPlot(optimset, flags, 97, 'Battery Profile'), ...
     @(optimset, flags)TotalControllable(optimset, flags),...
     @(optimset, flags)gridplot(optimset, flags, PV_in, lights), ...
     @(optimset, flags)constantplot(optimset, flags, TOU, 'Time-of-use Tariffs'), ...
     @psplotbestf...
     }, 'Display', 'iter', ...
-    'InitialMeshSize',10);
-[x, fval] = patternsearch(OFHandle, X0, A, b, Aeq, beq, LB, UB, [], options);
+    'InitialMeshSize',1000);
+[x, fval] = patternsearch(OFHandle, X0, A, b, [], [], LB, UB, [], options);
+
+fprintf('Pump: ')
+x(1:48)
+fprintf('Geyser: ')
+x(49:96)
+fprintf('Optimized cost: %d\n', fval)
