@@ -14,7 +14,7 @@ def GetLoadProfile(ProfileID,LoadStat,ScheduleStat):
     # Define the number of Timestamps
     CountTimestamp = RsTimestamp.__len__()
     # Retrieve the Loads record set for the Profile defined by ProfileID
-    Query = '''SELECT ID, Rating, DutyCycle FROM loads WHERE ProfileID = %d AND Status = %d;''' % (ProfileID,LoadStat)
+    Query = '''SELECT ID, Rating, DutyCycle, Designation FROM loads WHERE ProfileID = %d AND Status = %d;''' % (ProfileID,LoadStat)
     cur.execute(Query)
     RsLoads = cur.fetchall()
     # Initialize the Timestamp array
