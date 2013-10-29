@@ -7,15 +7,15 @@
 %flag)constantplots(optimvalues, flag, <vectorYouWantToGraph>), ...(repeat
 %if required)}, 'Display', 'iter')
 
-function stop = constantplots(optimvalues, flag, profile, name)
+function stop = constantplot(optimvalues, flag, profile, name)
 %PLOT_CONSTANT Summary of this function goes here
 %   Detailed explanation goes here
 stop = false;
 switch flag
     case 'init'
         bar(profile);
-        xlabel('Hours through the day', 'interp', 'none');
-        ylabel('Energy used per hour', 'interp', 'none');
+        xlabel('Halfhour timeslots', 'interp', 'none');
+        ylabel('Energy use per halfhour [kWh]', 'interp', 'none');
         title(name, 'interp', 'none')
 end
 

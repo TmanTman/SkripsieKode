@@ -38,7 +38,7 @@ switch flag
         Gridgraph = bar(profile);
         set(Gridgraph,'Tag','Appl');
         xlabel('Halfhour timeslots','interp','none'); 
-        ylabel('Energy per timeslot','interp','none')
+        ylabel('Energy use per halfhour [kWh]','interp','none')
         title(name,'interp','none');
     case 'iter'
         %Reload the new iterations values

@@ -1,14 +1,12 @@
 function [ grid ] = calcGrid( optimize_profile, varargin )
 %CALCGRID Calculates the grid profile
     %Receives the profile being optimized and all contr&uncontr loads. 
-    
-timeslots = 48; 
 
 %Insert battery profile into the grid profile
-grid = optimize_profile(1:timeslots);
+grid = zeros(1, 48);
 
 %Indexholders so that we can link optimize_profile and controllable loads
-start_index = 49; %The first element after battery profile in optimize_prof
+start_index = 1; %The first element after battery profile in optimize_prof
 end_index = 0;
 
 %Add contr and uncontr loads to optimization
