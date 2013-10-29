@@ -28,9 +28,9 @@ function stop = differencePlot(optimvalues,flag, ideal, varargin)
 %   optimized profile
 
 stop = false;
-profile_being_optimized = optimvalues.x(1:48);
+profile_being_optimized = zeros(1, 48);
 %Add controllable load profiles
-start_index = 49;
+start_index = 1;
 for i=1:length(varargin)
     amount_of_cycles = length(varargin{i}.d);
     end_index = start_index+amount_of_cycles-1;

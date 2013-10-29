@@ -25,10 +25,10 @@ function stop = cntrlTotalPlot(optimvalues,flag, varargin)
 %   $Revision: 1.1.6.1 $  $Date: 2009/08/29 08:25:12 $
 
 stop = false;
-%Add Battery values
-profile = optimvalues.x(1:48);
+%Initialize profile values
+profile = zeros(1, 48);
 %Add controllable load profiles
-start_index = 49;
+start_index = 1;
 for i=1:length(varargin)
     amount_of_cycles = length(varargin{i}.d);
     end_index = start_index+amount_of_cycles-1;

@@ -59,16 +59,19 @@ TOU(1, 21:36) = 55.1;
 TOU(1, 37:40) = 174.87;
 TOU(1, 41:48) = 55.1;
 
-grid_init = (lights+pump.X0+geyser.X0);
-grid_usage_init = zeros(1, 48);
-for i=1:length(grid_init)
-    if(grid_init(i)>0)
-        grid_usage_init(i) = grid_init(i);
-    end
+%display the cost before optimization is run
+%Calculate cost before optimization
+pump_init = [zeros(1, 23) 375*ones(1, 8) zeros(1, 2) 375*ones(1, 8) zeros(1, 7)];
+geyser_init = [zeros(1, 13) 1500*ones(1, 2) zeros(1, 22) 1500*ones(1, 6) zeros(1, 5) ];
+grid = PV_in+lights+pump_init+geyser_init;
+grid_usage = zeros(1, 48);
+for i=1:length(grid)
+    if grid(i) > 0
+        grid_usage(i) = grid(i);
+    end 
 end
-%Calculate cost, 1000 factor due to cost per kWh and current dimen Wh
-cost_init = (grid_usage_init.*TOU(1, :))/1000;
-fprintf('Initial cost: %d\n', cost_init)
+cost = grid_usage.*TOU(1, :);
+fprintf('Cost before optimization is: %d\n', sum(cost));
 
 %Call necessary function handles to make call to patternsearch
 OFHandle = @(x)object_function(x, TOU, PV_in, lights);

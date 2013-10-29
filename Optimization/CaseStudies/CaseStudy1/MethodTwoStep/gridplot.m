@@ -26,14 +26,8 @@ function stop = gridplot(optimvalues,flag, varargin)
 %   REVISION: 14 October - adapted to two step optimization problem
 
 stop = false;
-timeslots = 48;
-grid = zeros(1, timeslots);
-%add all appliance data being optimized to the grid profile
-grid = grid+optimvalues.x;
 %add all set appliances to the grid profile
-for i=1:length(varargin)
-    grid = grid + varargin{i}.profile;
-end
+grid = calcGrid(optimvalues.x, varargin{:});
 switch flag
     case 'init'
         Gridgraph = bar(grid);

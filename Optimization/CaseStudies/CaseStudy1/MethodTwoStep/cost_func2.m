@@ -11,7 +11,7 @@ y = 0;
 for i=1:length(grid)
    if grid(i) > 0
        if grid(i) > ideal_profile(i)
-           y = y + grid(i);
+           y = y + grid(i)-ideal_profile(i);
        end
    end
 end

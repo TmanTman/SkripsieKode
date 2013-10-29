@@ -12,7 +12,6 @@ function [ profile ] = constrProfile( X, dur, demand)
     for i=1:size(X, 2)
             %fprintf('Current starttime and dur: %d, %d. ', X(1,i), dur(1,i));
         %Gather info regarding starting times
-        disp(X(1, i))
         index_start = floor(X(1, i)/1800)+1;
         halfhour_after_start = index_start*1800;
             %fprintf('index_start: %d ', index_start)

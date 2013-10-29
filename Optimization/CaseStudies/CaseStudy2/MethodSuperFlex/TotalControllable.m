@@ -41,9 +41,9 @@ switch flag
         %Graph the plot
         Gridgraph = bar(profile);
         set(Gridgraph,'Tag','Appl');
-        xlabel('Halfhour timeslots','interp','none'); 
-        ylabel('Energy per timeslot','interp','none')
-        title('Total Controllable Profile','interp','none');
+        xlabel('Half hour timeslots','interp','none'); 
+        ylabel('Energy use per half hour [Wh]','interp','none')
+        title('Total controllable load profile','interp','none');
     case 'iter'
         %Reload the new iterations values
         Gridgraph = findobj(get(gca,'Children'),'Tag','Appl');

@@ -37,7 +37,6 @@ for i=1:length(varargin)
     columns = columns+size(varargin{i}.A, 2);
 end
 
-
 %Preallocate the memory (preallocation for better performance)
 A = zeros(rows, columns);
 b = zeros(rows, 1);
