@@ -19,5 +19,4 @@ for i=1:length(grid)
         grid_usage(i) = grid(i);
     end
 end
-
 y = sum(grid_usage.*TOU);

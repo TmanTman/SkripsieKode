@@ -19,5 +19,5 @@ for i=1:length(grid)
         grid_usage(i) = grid(i);
     end
 end
-
+fprintf('Total energy usage: %d\n', sum(grid_usage));
 y = sum(grid_usage.*TOU);

@@ -13,9 +13,7 @@ function [ profile ] = constrProfile( X, dur, demand)
             %fprintf('Current starttime and dur: %d, %d. ', X(1,i), dur(1,i));
         %Gather info regarding starting times
         index_start = floor(X(1, i)/1800)+1;
-        halfhour_after_start = index_start*1800;
-            %fprintf('index_start: %d ', index_start)
-        
+        halfhour_after_start = index_start*1800;    
         %One element
         if ((X(1, i)+dur(1, i)) <= halfhour_after_start) 
             profile(index_start) = dur(1, i)*(1/3600)*demand;
@@ -27,10 +25,17 @@ function [ profile ] = constrProfile( X, dur, demand)
             %First element entry
             profile(index_start) = (halfhour_after_start-X(1, i))*(1/3600)*demand; 
             index_end = ceil((X(1, i)+dur(1, i))/1800);
-                %fprintf('index_end: %d ', index_end);
+            %Matlab rounding errors can make a fractional entry into the
+            %index profile after the correct index_end. The error has
+            %neglegible error except if if make the vector length 49.
+            %Thus, if index_end = 49, make it 48
+            if index_end == 49
+                index_end = 48;
+            end
+            %Index_end correction completely
             halfhour_before_end = (index_end-1)*1800;
             %Last element entry
-            profile(index_end) = (X(1, i)+dur(1, i)-halfhour_before_end)*(1/3600)*demand; 
+            profile(index_end) = (X(1, i)+dur(1, i)-halfhour_before_end)*(1/3600)*demand;
           %%%%%% % fprintf('First and last elements: %d and %d\n', index_start, index_end);
             %Fill in the elements between start and end
             if (index_end - index_start) > 1

@@ -16,8 +16,8 @@ stop = false;
 switch flag
     case 'init'
         bar(profile);
-        xlabel('Hours through the day', 'interp', 'none');
-        ylabel('Energy used per hour', 'interp', 'none');
+        xlabel('Half hour timeslots', 'interp', 'none');
+        ylabel('Energy use per half hour [Wh]', 'interp', 'none');
         title(name, 'interp', 'none')
 end
 

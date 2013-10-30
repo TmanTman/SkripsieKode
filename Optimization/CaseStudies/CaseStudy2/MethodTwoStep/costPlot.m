@@ -38,16 +38,16 @@ for i=1:length(grid)
 end
 switch flag
     case 'init'
-        cost = sum(TOU.*grid_usage);
+        cost = sum(TOU.*grid_usage)/100000;
         Gridgraph = plot(1:length(cost), cost);
         set(Gridgraph,'Tag','Cost');
-        xlabel('Hours through the day','interp','none'); 
-        ylabel('Energy used per hour','interp','none')
-        title('Cost to client','interp','none');
+        xlabel('Iterations','interp','none'); 
+        ylabel('Cost to client [R/day]','interp','none')
+        title('Cost optimization','interp','none');
     case 'iter'
         Gridgraph = findobj(get(gca,'Children'),'Tag','Cost');
         cost = get(Gridgraph, 'YData');
-        cost = [cost sum(TOU.*grid_usage)];
+        cost = [cost sum(TOU.*grid_usage)/100000];
         xdata = 1:length(cost);
         set(Gridgraph, 'Xdata', xdata)
         set(Gridgraph, 'Ydata',cost);

@@ -39,8 +39,8 @@ switch flag
         end
         Gridgraph = bar(grid);
         set(Gridgraph,'Tag','Grid');
-        xlabel('Hours through the day','interp','none'); 
-        ylabel('Energy used per hour','interp','none')
+        xlabel('Half hour timeslots','interp','none'); 
+        ylabel('Energy use per half hour [Wh]','interp','none')
         title('Grid enery usage','interp','none');
     case 'iter'
         %add all appliance data being optimized to the grid profile

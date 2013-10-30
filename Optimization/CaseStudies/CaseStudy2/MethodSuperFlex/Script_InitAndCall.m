@@ -43,7 +43,7 @@ tmp_UB = ones(1, 48)*1500;
 %Allow the geyser to use between 12000 an 12500 Wh per day
 tmp_A = ones(2, 48);
 tmp_A(2, :) = -1*tmp_A(2, :);
-tmp_b = [6100; -5900];
+tmp_b = [12500; -12000];
 %Create the geyser object
 geyser = Appliance(tmp_LB, tmp_UB, tmp_A, tmp_b, tmp_X0);
 

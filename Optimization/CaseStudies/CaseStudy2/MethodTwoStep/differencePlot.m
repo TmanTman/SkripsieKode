@@ -28,9 +28,9 @@ function stop = differencePlot(optimvalues,flag, ideal, varargin)
 %   optimized profile
 
 stop = false;
-profile_being_optimized = optimvalues.x(1:48);
+profile_being_optimized = zeros(1, 48);
 %Add controllable load profiles
-start_index = 49;
+start_index = 1;
 for i=1:length(varargin)
     amount_of_cycles = length(varargin{i}.d);
     end_index = start_index+amount_of_cycles-1;
@@ -42,8 +42,8 @@ switch flag
     case 'init'
         Dif = bar(dif);
         set(Dif,'Tag','Difference');
-        xlabel('Halfhours through the day','interp','none'); 
-        ylabel('Energy used per halfhour','interp','none')
+        xlabel('Half hour timeslots','interp','none'); 
+        ylabel('Energy use  per half hour [Wh]','interp','none')
         title('Optimized load profile minus ideal profile','interp','none');
     case 'iter'
         Dif = findobj(get(gca,'Children'),'Tag','Difference');

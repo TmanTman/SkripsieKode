@@ -25,10 +25,10 @@ function stop = cntrlTotalPlot(optimvalues,flag, varargin)
 %   $Revision: 1.1.6.1 $  $Date: 2009/08/29 08:25:12 $
 
 stop = false;
-%Add Battery values
-profile = optimvalues.x(1:48);
+%Initialize profile values
+profile = zeros(1, 48);
 %Add controllable load profiles
-start_index = 49;
+start_index = 1;
 for i=1:length(varargin)
     amount_of_cycles = length(varargin{i}.d);
     end_index = start_index+amount_of_cycles-1;
@@ -40,9 +40,9 @@ switch flag
         %Graph the plot
         Gridgraph = bar(profile);
         set(Gridgraph,'Tag','CntrlTotal');
-        xlabel('Halfhour timeslots','interp','none'); 
-        ylabel('Energy per timeslot','interp','none')
-        title('Total profile for controllable loads','interp','none');
+        xlabel('Half hour timeslots','interp','none'); 
+        ylabel('Energy use per half hour [Wh]','interp','none')
+        title('Total controllable load profile','interp','none');
     case 'iter'
         %Reload the new iterations values
         Gridgraph = findobj(get(gca,'Children'),'Tag','CntrlTotal');
