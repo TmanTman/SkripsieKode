@@ -20,10 +20,13 @@ function [ A, b ] = BatteryInequalityGenerator(r)
 %Each time period has to check for both over and undercharge, thus the
 %amount of rows = time periods * 2
 
+max_charge = 5000;
+min_charge = 4000;
+
 %Set up b matrix
 b = ones(96, 1);
-b(1:2:95, 1) = 2000 - r;
-b(2:2:96, 1) = -1200 + r;
+b(1:2:95, 1) = max_charge - r;
+b(2:2:96, 1) = -min_charge + r;
 
 %Set up A matrix
 A = zeros(96, 48);

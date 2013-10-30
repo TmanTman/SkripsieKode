@@ -24,10 +24,13 @@ function [ A, b ] = BatteryInequalityGenerator(r)
 % 20% DOD (Dept of discharge) allowed
 % Maximum charge level 5000, minimum 4000
 
+max_charge = 5000;
+min_charge = 4000;
+
 %Set up b matrix
 b = ones(96, 1);
-b(1:2:95, 1) = 5000 - r;
-b(2:2:96, 1) = 4000 + r;
+b(1:2:95, 1) = max_charge - r;
+b(2:2:96, 1) = -min_charge + r;
 
 %Set up A matrix
 A = zeros(96, 48);

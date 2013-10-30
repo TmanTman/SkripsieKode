@@ -49,7 +49,7 @@ geyser = Appliance(tmp_LB, tmp_UB, tmp_A, tmp_b, tmp_X0);
 tmp_X0 = 500*ones(1, 48);
 tmp_LB = -250*ones(1, 48);
 tmp_UB = 250*ones(1, 48);
-[tmp_A, tmp_b] = BatteryInequalityGenerator(500);
+[tmp_A, tmp_b] = BatteryInequalityGenerator(4500);
 battery = Appliance(tmp_LB, tmp_UB, tmp_A, tmp_b, tmp_X0);
 
 %Create the variable matrices from the configurable appliances
@@ -99,11 +99,12 @@ options = psoptimset('PlotFcns', {@(optimset, flags)constantplot(optimset, flags
 [x, fval] = patternsearch(OFHandle, X0, A, b, Aeq, beq, LB, UB, [], options);
 
 %Display the results of the optimization
-fprintf('Pump: ')
-pump = x(1:48)
-fprintf('Geyser: ')
-geyser = x(49:96)
+% fprintf('Pump: ')
+pump = x(1:48);
+% fprintf('Geyser: ')
+geyser = x(49:96);
+battery = x(97:144);
 fprintf('Optimized cost: %d\n', fval/1000)
 %The amount of PV energy pumped into grid before optimization
-grid_pumped_back = pumpedBackProfile(PV_in, lights, pump, geyser);
-fprintf('PV energy pumped back: %d', sum(grid_pumped_back));
+pv_not_used = pvWasted(PV_in, lights, pump, geyser, battery);
+fprintf('PV energy pumped back: %d\n', sum(pv_not_used));

@@ -1,7 +1,7 @@
 function grid_pumped_back = pumpedBackProfile( varargin )
-%GRIDUSAGE Calculates the energy drawn from the grid
-%   For all the energy profiles given, this function calculates the amount
-%   of energy drawn from the grid
+%GRIDUSAGE Calculates the energy from PV not used
+%   For all the energy profiles given, this function calculates the energy
+%   from PV that went to the grid (that was wasted)
 grid = zeros(1, 48);
 for i=1:length(varargin)
     grid=grid+varargin{i};
