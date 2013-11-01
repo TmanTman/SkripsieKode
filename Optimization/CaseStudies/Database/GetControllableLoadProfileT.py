@@ -83,11 +83,11 @@ def barplot(XLabels,YData,XTickInt,ax, title, fig):
     # Generate the x-axis number range
     XData = range(N)
     # See note below on the breakdown of this command
-    ax.bar(XData, YData, facecolor='#777777', align='edge', ecolor='black')
+    ax.bar(XData, YData, facecolor='#777777', align='center', ecolor='black')
     # Create the x label
-    ax.set_xlabel('Time [hh:mm:ss]', fontsize=16) 
-    # Set the width so the graph is not cut off
-    ax.set_xlim(-0.5, 48.5)
+    ax.set_xlabel('Time [hh:mm:ss]') 
+    # Create the y label
+    ax.set_ylabel('Energy [kW]') 
     # Create the x-axis ticks (At the center of the bars)
     XTickData = XData[(0)::XTickInt]
     ax.set_xticks(XTickData)
@@ -95,14 +95,17 @@ def barplot(XLabels,YData,XTickInt,ax, title, fig):
     XTickLabels = XLabels[(0)::XTickInt]
     ax.set_xticklabels(XTickLabels)
     # Create the title, in italics
-    ax.set_title(title,fontstyle='italic', fontsize=18)
+    ax.set_title(title,fontstyle='italic')
     dispGraph(fig, ax, title)
 
 
 def dispGraph(fig,ax, title):
     # Adjust the font sizes
     # Create the title, in italics
+    plt.title(title, fontsize=18)
     plt.setp(ax.get_xticklabels(), fontsize=12)
+    plt.ylabel(ax.get_ylabel(), fontsize=16)
+    plt.xlabel(ax.get_xlabel(), fontsize=16)
     plt.setp(ax.get_yticklabels(), fontsize=12)
     # Extremely nice function to auto-rotate the x axis labels.
     # It was made for dates (hence the name) but it works
@@ -153,17 +156,12 @@ print "Total Energy consumption: ", sum(Profile_Total[1,:])
 #Sketch the three graphs
 #Will sketch 3 axes alongside each other, sharing the y scale
 XTickInt = 4
-fig, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey='row')
+fig, ax2 = plt.subplots(1, 1)
 
-#plot the three graphs alongside with each other
-barplot(Timestamp, Profile_Uncontrollable[1,:], XTickInt,ax1, 'Energy load profile - Uncontrollable', fig)
-# Create the y label only for the most left side graph
-ax1.set_ylabel('Energy [kW]', fontsize=16) 
-print 'lenght of timestamp and profile_controllable: ', len(Timestamp), ' ' , len(Profile_Controllable[1,:])
-barplot(Timestamp, Profile_Controllable[1,:],XTickInt,ax2, 'Energy load profile - Controllable', fig)                      
-barplot(Timestamp, Profile_Total[1,:],XTickInt, ax3, 'Energy load profile - Total', fig)
+#barplot(Timestamp, Profile_Uncontrollable[1,:], XTickInt,ax1, 'Energy Consumption Profile - Uncontrollable', fig)
+barplot(Timestamp, Profile_Controllable[1,:],XTickInt,ax2, 'Energy Consumption Profile - Controllable', fig)                      
+#barplot(Timestamp, Profile_Total[1,:],XTickInt, ax3, 'Energy Consumption Profile - Total', fig)
 
-fig.autofmt_xdate()
 #Display the formatted graphs   
 plt.show()  
 
